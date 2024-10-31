@@ -17,7 +17,7 @@ class Record(BaseModel):
     description = CharField(null=True, max_length=255, help_text="描述")
 
     def __str__(self):
-        return f'Artwork: {self.artwork} by {self.artist_id.name}'
+        return f'Record: {self.result} by {self.user_id.username}'
 
     def has_image(self):
-        return bool(self.url)
+        return bool(self.res_image)

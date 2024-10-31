@@ -20,6 +20,7 @@ class RecordDetail(RecordBase):
     size: Optional[float] = None
     length: Optional[float] = None
     width: Optional[float] = None
+    description: Optional[str] = None
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
 
@@ -32,6 +33,7 @@ class RecordDetail_m(RecordBase):
     size: Optional[float] = None
     length: Optional[float] = None
     width: Optional[float] = None
+    description: Optional[str] = None
 
 
 class RecordCreate(BaseModel):
@@ -42,6 +44,7 @@ class RecordCreate(BaseModel):
     size: Optional[float] = None
     length: Optional[float] = None
     width: Optional[float] = None
+    description: Optional[str] = None
 
 
 class RecordUpdate(BaseModel):
@@ -51,3 +54,4 @@ class RecordUpdate(BaseModel):
     size: Optional[float] = None
     length: Optional[float] = None
     width: Optional[float] = None
+    description: Optional[str] = None
