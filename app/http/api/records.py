@@ -76,6 +76,7 @@ async def upload_obs_image(
 
     # 获取检测结果
     response_json = detect_ppd(image.filename, image_bytes, image.content_type)
+
     res_image_location = response_json["res_image_location"]
     result = response_json["result"]
     width = response_json["width"]
@@ -85,11 +86,20 @@ async def upload_obs_image(
     time = response_json["time"]
 
     # 上传检测结果文件到 OBS
-    object_key = f'ppd/{username}/{current_time}/result_{image.filename}'  # 使用用户名作为路径的一部分
+    object_key = f'ppd/userdata/{username}/{current_time}/result_{image.filename}'  # 使用用户名作为路径的一部分
     resp2 = obsClient.putFile(bucket_name, object_key, res_image_location)
 
     # logging.info(f"检测文件上传OBS成功: {resp.body.objectUrl}")
     res_image_url = resp2.body.objectUrl
+
+
+    # 删除临时文件，如果想测试可以删除这两行代码，生成的结果就会存放在tmp目录下
+    # 删除用户上传的图片
+    if os.path.exists(image_location):
+        os.remove(image_location)
+    # 删除检测结果的图片
+    if os.path.exists(res_image_location):
+        os.remove(res_image_location)
 
 
     # 向数据库中新添加一个记录
@@ -133,10 +143,6 @@ def detect_ppd(filename, image_bytes, content_type):
         with open(output_file, "wb") as f:
             f.write(result_image_data)
 
-        # # 删除临时文件
-        # if os.path.exists(file_location):
-        #     os.remove(file_location)
-
         return {
             "res_image_location": output_file,
             "result": result_info["result"],
@@ -176,7 +182,9 @@ def get_record(record_id: int):
         description=record.description,
         size=record.size,
         length=record.length,
-        width=record.width
+        width=record.width,
+        updated_at=record.updated_at,
+        created_at=record.created_at
     )
     if not record:
         raise HTTPException(status_code=404, detail="记录未找到")

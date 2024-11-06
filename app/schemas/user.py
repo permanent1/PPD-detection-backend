@@ -35,11 +35,11 @@ class UserCreate(BaseModel):
 
 
 class UserUpdate(BaseModel):
-    username: Optional[str]
-    password: Optional[str]
+    nickname: Optional[str] = None
+    password: Optional[str] = None
     cellphone: Optional[str] = None
     email: Optional[str] = None
+    gender: Optional[str] = None
+    avatar: Optional[str] = None
     id_number: Optional[datetime] = None
     birth: Optional[str] = None
-    state: str
-    identity: str
